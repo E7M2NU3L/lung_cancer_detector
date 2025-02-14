@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'D:\opencv\ui\Gujarathi_lang_recognition\demo2.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 import numpy as np
 from keras.preprocessing import image
@@ -112,12 +104,12 @@ class Ui_MainWindow(object):
             self.imageLbl.setAlignment(QtCore.Qt.AlignCenter) # Align the label to center
 
     def classifyFunction(self):
-        json_file = open('model.json', 'r')
+        json_file = open('../models/model.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
         # load weights into new model
-        loaded_model.load_weights("model.h5")
+        loaded_model.load_weights("../models/model.h5")
         #loaded_model.load_weights("ResNet50-ft-10.model")
         print("Loaded model from disk");
         label=["Covid","Normal"]
@@ -170,7 +162,7 @@ class Ui_MainWindow(object):
 
         test_datagen = ImageDataGenerator(rescale = 1./255)
 
-        training_set = train_datagen.flow_from_directory('G:\__Technology___Beyond_Dreams\Deep_Learning\Codes\Final\Corona_virus_detection\TrainingDataset',
+        training_set = train_datagen.flow_from_directory('../datasets/TrainingDataset',
                                                          target_size = (128, 128),
                                                          batch_size = 8,
                                                          class_mode = 'categorical')
@@ -179,7 +171,7 @@ class Ui_MainWindow(object):
         print(labels)
         
 
-        test_set = test_datagen.flow_from_directory('G:\__Technology___Beyond_Dreams\Deep_Learning\Codes\Final\Corona_virus_detection\TestingDataset',
+        test_set = test_datagen.flow_from_directory('../datasets/TestingDataset',
                                                     target_size = (128, 128),
                                                     batch_size = 8,
                                                     class_mode = 'categorical')
