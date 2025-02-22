@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cvp-rust-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cvp-rust.vercel.app
+    http:
+      paths:
+      - path: /cvp-rust
+        pathType: Prefix
+        backend:
+          service:
+            name: cvp-rust-service  
+            port:
+              number: 80

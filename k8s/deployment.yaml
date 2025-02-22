@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cvp-rust-deployment
+  labels:
+    app: cvp_rust
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cvp_rust
+  template:
+    metadata:
+      labels:
+        app: cvp_rust
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
