@@ -1,7 +1,3 @@
-Here's a complete `README.md` for your project:  
-
----
-
 # **AI-Powered Medical Diagnosis Platform**  
 
 ## **Overview**  
@@ -235,7 +231,3 @@ curl -X POST -F "file=@/path/to/data.xlsx" http://127.0.0.1:8000/api/predict/num
 
 ## **License**  
 📜 MIT License  
-
----
-
-This README provides everything needed to **install, configure, deploy, and test** the AI-powered medical diagnosis platform. Let me know if you need modifications! 🚀
