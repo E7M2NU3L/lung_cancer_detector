@@ -1,5 +1,5 @@
 from django.contrib import admin
-from services.lung_classifier.models import CovidModel, LungCancerCtModel, LungCancerModel
+from lung_classifier.models import CovidModel, LungCancerCtModel, LungCancerModel
 
 # Register your models here.
 admin.site.register(CovidModel)

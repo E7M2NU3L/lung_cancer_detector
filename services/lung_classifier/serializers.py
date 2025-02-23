@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from services.lung_classifier.models import CovidModel, LungCancerModel, LungCancerCtModel
+from lung_classifier.models import CovidModel, LungCancerModel, LungCancerCtModel
 
 class LungCancerSerializer(ModelSerializer):
     class Meta:

@@ -1,6 +1,8 @@
 import torch
 from torchvision import transforms
 from PIL import Image
+import io
+import requests
 
 class CovidPredictor:
     def __init__(self, image : str) -> None:
@@ -20,12 +22,14 @@ class CovidPredictor:
 
     # Load and transform the image
     def preprocess_image(self):
-        image = Image.open(self.image).convert("RGB")  # Ensure RGB format
+        response = requests.get(self.image)
+        byteInfo = io.BytesIO(response.content)
+        image = Image.open(byteInfo).convert("RGB")  # Ensure RGB format
         image = self.transform(self.image)  # Apply transformations
         image = image.unsqueeze(0)  # Add batch dimension
         return image
 
-    def predict_image(self):
+    def predict_image(self) -> str:
         image = self.preprocess_image(self.image)
 
         # Forward pass through the model
