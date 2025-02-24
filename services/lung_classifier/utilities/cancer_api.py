@@ -1,10 +1,12 @@
 from PIL import Image
 import torch
 from torchvision import transforms
+from lung_classifier.singletons.lung_models import CT_CNN
 import joblib
 import pandas as pd
 import requests
 import io
+import os
 
 class LungCancerPredictor:
     def __init__(self, data : dict) -> None:
@@ -12,6 +14,7 @@ class LungCancerPredictor:
 
         # Mapping for categorical values
         self.gender_map = {"M": 1, "F": 0}
+        print(os.curdir)
 
         # Transform the data to match the required feature names
         self.formatted_data = {
@@ -73,6 +76,11 @@ class LungCancerPredictor:
 class LungCancerCTPredictor:
     def __init__(self, image : str) -> None:
         self.image = image
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        print("Device: ",device)
+
+        self.model = CT_CNN(num_classes=3).to(device)
+        print("Models loaded")
 
         self.transform = transforms.Compose([
             transforms.Resize((64, 64)),
@@ -83,23 +91,26 @@ class LungCancerCTPredictor:
 
          # Define class labels
         self.class_labels = ["Benign", "Malignant", "Normal"]
-        self.output_dir = ""
-        self.model = torch.load(self.output_dir)
+        self.output_dir = "D:/mission_2025/python_learning/django_services/lung_cancer_detector/models/lung_cancer_detector.pth"
+        self.model.load_state_dict(torch.load(self.output_dir))
+        print("Model is fitted with weights")
 
     # Load and transform the image
     def preprocess_image(self):
         response = requests.get(self.image)
         byteInfo = io.BytesIO(response.content)
         image = Image.open(byteInfo).convert("RGB")  # Ensure RGB format
-        image = self.transform(self.image)  # Apply transformations
+        image = self.transform(image)  # Apply transformations
         image = image.unsqueeze(0)  # Add batch dimension
+        print("Image has been prepared")
         return image
 
-    def predict_image(self):
-        image = self.preprocess_image(self.image)
+    def predict_image(self) -> str:
+        image = self.preprocess_image()
 
         # Forward pass through the model
         with torch.no_grad():
+            print("Output is to be found")
             output = self.model(image)
             predicted_class = torch.argmax(output, dim=1).item()
 
