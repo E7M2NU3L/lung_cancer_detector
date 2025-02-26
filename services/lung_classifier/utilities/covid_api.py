@@ -7,15 +7,16 @@ import os
 from lung_classifier.singletons.lung_models import Covid_CNN
 
 class CovidPredictor:
-    def __init__(self, image : str) -> None:
+    def __init__(self, image : str, path : str) -> None:
         self.image = image
+        self.path = os.path.join(path, "models", "covid_detector.pth")
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         self.model = Covid_CNN(num_classes=10).to(device)
         print("Pretrained model is loaded")
 
         self.output_dir = "D:/mission_2025/python_learning/django_services/lung_cancer_detector/models/covid_detector.pth"
-        self.model.load_state_dict(torch.load(self.output_dir))
+        self.model.load_state_dict(torch.load(self.path))
         print("Model is loaded with weights")
 
         self.transform = transforms.Compose([

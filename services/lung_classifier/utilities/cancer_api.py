@@ -9,8 +9,9 @@ import io
 import os
 
 class LungCancerPredictor:
-    def __init__(self, data : dict) -> None:
+    def __init__(self, data : dict, path : str) -> None:
         self.data = data
+        self.path = os.path.join(path, "models")
 
         # Mapping for categorical values
         self.gender_map = {"M": 1, "F": 0}
@@ -37,9 +38,9 @@ class LungCancerPredictor:
 
         root_dir_relative = "D:/mission_2025/python_learning/django_services/lung_cancer_detector/models/"
 
-        self.rf = joblib.load(root_dir_relative + "random_forest.pkl")
-        self.gb = joblib.load(root_dir_relative + "gradient_boosting.pkl")
-        self.ada = joblib.load(root_dir_relative + "adaboost.pkl")
+        self.rf = joblib.load(os.path.join(self.path, "random_forest.pkl"))
+        self.gb = joblib.load(os.path.join(self.path, "gradient_boosting.pkl"))
+        self.ada = joblib.load(os.path.join(self.path, "adaboost.pkl"))
 
         self.sample_data = pd.DataFrame(self.formatted_data)
 
@@ -74,8 +75,10 @@ class LungCancerPredictor:
         return 'YES' if ensemble_pred == 1 else 'NO'
 
 class LungCancerCTPredictor:
-    def __init__(self, image : str) -> None:
+    def __init__(self, image : str, path : str) -> None:
         self.image = image
+        self.path = os.path.join(path, "models", "lung_cancer_detector.pth")
+
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         print("Device: ",device)
 
@@ -92,7 +95,7 @@ class LungCancerCTPredictor:
          # Define class labels
         self.class_labels = ["Benign", "Malignant", "Normal"]
         self.output_dir = "D:/mission_2025/python_learning/django_services/lung_cancer_detector/models/lung_cancer_detector.pth"
-        self.model.load_state_dict(torch.load(self.output_dir))
+        self.model.load_state_dict(torch.load(self.path))
         print("Model is fitted with weights")
 
     # Load and transform the image

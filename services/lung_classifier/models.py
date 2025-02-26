@@ -3,6 +3,7 @@ from django.db import models
 class CovidModel(models.Model):
     image_url = models.CharField(
         max_length = 2250,
+        blank = True
     )
     author = models.CharField(
         max_length = 100
@@ -13,6 +14,7 @@ class CovidModel(models.Model):
     )
     output = models.CharField(
         max_length = 100,
+        blank = True
     )
 
     def __str__(self) -> str:
@@ -45,6 +47,7 @@ class LungCancerModel(models.Model):
 class LungCancerCtModel(models.Model):
     image_url = models.CharField(
         max_length = 2250,
+        blank = True
     )
     author = models.CharField(
         max_length = 100
@@ -55,6 +58,7 @@ class LungCancerCtModel(models.Model):
     )
     output = models.CharField(
         max_length = 100,
+        blank = True
     )
 
     def __str__(self) -> str:

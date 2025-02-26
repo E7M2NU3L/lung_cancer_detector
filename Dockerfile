@@ -13,6 +13,9 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application files
 COPY . .
 
+# move to the services folder
+RUN cd /services
+
 # Apply migrations (removing unnecessary CD command)
 RUN python manage.py makemigrations && python manage.py migrate
 
