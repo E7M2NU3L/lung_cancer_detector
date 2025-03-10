@@ -4,9 +4,7 @@
       {
         "src": "services/manage.py",
         "use": "@vercel/python",
-        "config": {
-          "zeroConfig": true
-        }
+        "config": { "runtime": "python3.7" }
       }
     ],
     "routes": [
