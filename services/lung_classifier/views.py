@@ -104,6 +104,7 @@ class LungCancerChecker(APIView):
                 )
             )
         input_data = request.data
+        print(input_data)
         responses = LungCancerPredictor(data=input_data, path=path).predict()
         input_data['lung_cancer'] = responses
         print(input_data)

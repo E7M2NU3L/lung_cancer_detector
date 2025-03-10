@@ -13,14 +13,11 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application files
 COPY . .
 
-# move to the services folder
-RUN cd /services
-
 # Apply migrations (removing unnecessary CD command)
-RUN python manage.py makemigrations && python manage.py migrate
+RUN python /app/services/manage.py makemigrations && python manage.py migrate
 
 # Expose port 8000 (Django default)
 EXPOSE 8000
 
 # Run Django server
-CMD ["python", "manage.py", "runserver"]
+CMD ["python", "/app/services/manage.py", "runserver"]

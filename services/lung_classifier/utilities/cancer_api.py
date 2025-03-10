@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 import io
 import os
+import pickle
 
 class LungCancerPredictor:
     def __init__(self, data : dict, path : str) -> None:
@@ -45,12 +46,12 @@ class LungCancerPredictor:
         self.sample_data = pd.DataFrame(self.formatted_data)
 
         # Normalize input using the saved scaler
-        self.scaler = joblib.load(root_dir_relative + "scaler.pkl")
+        self.scaler = joblib.load(os.path.join(self.path, "scaler.pkl"))
         self.sample_scaled = self.scaler.transform(self.sample_data)
 
         print("Data has been collected and scaled..")
 
-        self.model = torch.load(root_dir_relative + "lung_cancer_detector.pth")
+        self.model = torch.load(os.path.join(self.path , "lung_cancer_detector.pth"))
 
         # Convert to PyTorch tensor
         self.sample_tensor = torch.tensor(self.sample_scaled, dtype=torch.float32)
@@ -70,9 +71,11 @@ class LungCancerPredictor:
         gb_pred = self.gb.predict(self.sample_scaled)[0]
         ada_pred = self.ada.predict(self.sample_scaled)[0]
 
+        print(rf_pred, gb_pred, ada_pred)
+
         # Ensemble (average voting)
         ensemble_pred = round((rf_pred + gb_pred + ada_pred) / 3)
-        return 'YES' if ensemble_pred == 1 else 'NO'
+        return 'YES' if ada_pred == 1 else 'NO'
 
 class LungCancerCTPredictor:
     def __init__(self, image : str, path : str) -> None:
