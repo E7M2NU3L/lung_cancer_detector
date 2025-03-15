@@ -134,6 +134,7 @@ ALLOWED_HOSTS = ["*"]  # Adjust this for production
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Adjust for frontend URL
     "http://127.0.0.1:5173",
+    'https://cvp-rust.vercel.app'
 ]
 CORS_ALLOW_CREDENTIALS = True
 

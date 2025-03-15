@@ -1,23 +1,17 @@
 # Use an official Python image
-FROM python:3.7.5
+FROM python:3.7.5-slim
 
-# Set the working directory inside the container
+FROM python:3.11.1-slim
+
 WORKDIR /app
 
-# Copy the requirements file first (to optimize caching)
 COPY requirements.txt .
 
-# Install dependencies
-RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/* 
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application files
 COPY . .
 
-# Apply migrations (removing unnecessary CD command)
-RUN python /app/services/manage.py makemigrations && python manage.py migrate
-
-# Expose port 8000 (Django default)
 EXPOSE 8000
 
-# Run Django server
-CMD ["python", "/app/services/manage.py", "runserver"]
+CMD ["sh", "-c", "python /app/services/manage.py makemigrations && python /app/services/manage.py migrate && python /app/services/manage.py runserver 0.0.0.0:8000"]
